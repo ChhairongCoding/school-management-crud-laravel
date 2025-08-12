@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\http\Controllers\CourseController;
 use App\Http\Controllers\AuthController;
 
+
 //Route::get('/students', 'StudentController@index');
 
 //Route::get('/', function () {
@@ -30,3 +31,16 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
+
+
+
+
+//user
+
+use App\Http\Controllers\PageController;
+
+Route::get('/user/home', [PageController::class, 'home'])->name('home');
+Route::get('/user/courses', [PageController::class, 'courses']);
+Route::get('/user/about', [PageController::class, 'about']);
+Route::get('/user/contact', [PageController::class, 'contact']);
+Route::get('/user/courses/{id}', [PageController::class, 'show'])->name('courses.show');
