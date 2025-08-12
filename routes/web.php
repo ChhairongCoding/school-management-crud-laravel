@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\http\Controllers\CourseController;
+use App\Http\Controllers\AuthController;
+
 
 //Route::get('/students', 'StudentController@index');
 
@@ -11,14 +13,34 @@ use App\http\Controllers\CourseController;
 //});
 
 
-Route::get('/', fn () => view('dashboard'));
-Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
+Route::get('/', fn () => view('admin_views.dashboard'));
+Route::get('/dashboard', fn () => view('admin_views.dashboard'))->name('dashboard');
 
 
 
 Route::resource('students', StudentController::class);
 Route::get('/students/{id}/delete', [StudentController::class, 'delete'])->name('students.delete');
-
 Route::resource('/courses', CourseController::class);
 Route::get('/courses/{id}/view', [CourseController::class, 'view'])->name('courses.view');
 
+
+//auth
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+
+
+
+//user
+
+use App\Http\Controllers\PageController;
+
+Route::get('/user/home', [PageController::class, 'home'])->name('home');
+Route::get('/user/courses', [PageController::class, 'courses']);
+Route::get('/user/about', [PageController::class, 'about']);
+Route::get('/user/contact', [PageController::class, 'contact']);
+Route::get('/user/courses/{id}', [PageController::class, 'show'])->name('courses.show');

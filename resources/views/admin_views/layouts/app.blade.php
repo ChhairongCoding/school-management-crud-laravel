@@ -32,7 +32,7 @@
 <div id="mobileMenu" class="md:hidden hidden fixed inset-0 bg-black bg-opacity-50 z-40">
     <div class="bg-white w-64 h-full p-4">
         <button onclick="document.getElementById('mobileMenu').classList.add('hidden')" class="mb-4 text-red-500">✕ Close</button>
-        <a href="/dashboard" class="block px-4 py-2 rounded hover:bg-gray-200">Dashboard</a>
+        <a href="./dashboard" class="block px-4 py-2 rounded hover:bg-gray-200">Dashboard</a>
         <a href="/students" class="block px-4 py-2 rounded hover:bg-gray-200">Students</a>
         <a href="/courses" class="block px-4 py-2 rounded hover:bg-gray-200">Courses</a>
         <a href="/settings" class="block px-4 py-2 rounded hover:bg-gray-200">Settings</a>

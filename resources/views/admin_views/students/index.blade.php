@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin_views.layouts.app')
 
 @section('content')
     <script>
