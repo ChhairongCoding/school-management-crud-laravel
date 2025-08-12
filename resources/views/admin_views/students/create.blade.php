@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin_views.layouts.app')
 
 @section('content')
     <h2 class="text-2xl font-semibold mb-4">Add New Student</h2>
