@@ -20,61 +20,44 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        Student::create($request->all());
-        return redirect("students");
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+        ]);
+
+        Student::create($validatedData);
+
+        // Use the correct admin route name for the redirect
+        return redirect()->route('admin.students.index')->with('success', 'Student created successfully!');
     }
 
-    public function show(Student $student)
+    public function edit(Student $student)
     {
-        //
-    }
-
-    public function edit($id)
-    {
-        $student = Student::findOrFail($id);
         return view('admin_views.students.edit', compact('student'));
     }
 
-    public function delete($id)
+    public function update(Request $request, Student $student)
     {
-        $student = Student::findOrFail($id);
-        $student->delete();
-        return redirect()->route('students.index')->with('success', 'Student deleted successfully.');
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string',
-            'course' => 'required|string',
-            'status' => 'required|string',
+            'email' => 'required|email|unique:students,email,' . $student->id,
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
         ]);
 
-        $student = Student::findOrFail($id);
+        $student->update($validatedData);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('uploads'), $imageName);
-        }
-
-        $student->name = $request->name;
-        $student->email = $request->email;
-        $student->phone = $request->phone;
-        $student->address = $request->address;
-        $student->course = $request->course;
-        $student->status = $request->status;
-
-        $student->save();
-
-        return redirect()->route('students.index')->with('success', 'Student updated successfully');
+        // Use the correct admin route name for the redirect
+        return redirect()->route('admin.students.index')->with('success', 'Student updated successfully!');
     }
+
     public function destroy(Student $student)
     {
-        //
+        $student->delete();
+
+        // Use the correct admin route name for the redirect
+        return redirect()->route('admin.students.index')->with('success', 'Student deleted successfully!');
     }
 }
-

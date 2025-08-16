@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Category; // 1. Import the Category model
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -10,31 +11,27 @@ class PageController extends Controller
     // Show Home Page
     public function home()
     {
-        $courses = [
-            (object)['id' => 1, 'title' => 'Web Development Bootcamp', 'category' => 'Programming', 'rating' => 4.8, 'image' => 'https://via.placeholder.com/400x200'],
-            (object)['id' => 2, 'title' => 'UI/UX Design Masterclass', 'category' => 'Design', 'rating' => 4.9, 'image' => 'https://via.placeholder.com/400x200'],
-            (object)['id' => 3, 'title' => 'Digital Marketing Essentials', 'category' => 'Marketing', 'rating' => 4.7, 'image' => 'https://via.placeholder.com/400x200'],
-        ];
+        $courses = Course::latest()->take(3)->get();
+        $categories = Category::all();
 
-        return view('user_views.homes.home_page', compact('courses'));
+        // Change 'user_views.home' to match your file path
+        return view('user_views.homes.home_page', [
+            'courses' => $courses,
+            'categories' => $categories,
+        ]);
     }
 
     // Show All Courses
     public function courses()
     {
-        $courses = [
-            (object)['id' => 1, 'title' => 'Web Development Bootcamp', 'category' => 'Programming', 'rating' => 4.8, 'image' => 'https://via.placeholder.com/400x200'],
-            (object)['id' => 2, 'title' => 'UI/UX Design Masterclass', 'category' => 'Design', 'rating' => 4.9, 'image' => 'https://via.placeholder.com/400x200'],
-            (object)['id' => 3, 'title' => 'Digital Marketing Essentials', 'category' => 'Marketing', 'rating' => 4.7, 'image' => 'https://via.placeholder.com/400x200'],
-        ];
-
-        return view('user_views.courses.course_page', compact('courses'));
+        // Fetch all courses from the database
+        $courses = Course::all();
+        return view('user_views.courses.index', compact('courses'));
     }
 
     public function about()
     {
         return view('user_views.abouts.about_page');
-
     }
 
     public function contact()
@@ -44,12 +41,7 @@ class PageController extends Controller
 
     public function show($id)
     {
-        $item = Course::findOrFail($id);
-        return view('user_views.courses.show', compact('item'));
+        $course = Course::findOrFail($id);
+        return view('user_views.courses.show', compact('course'));
     }
-
-
-
-
-
 }

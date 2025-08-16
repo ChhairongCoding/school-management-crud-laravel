@@ -13,28 +13,37 @@
         Students System
     </div>
     <nav class="p-4 space-y-2">
-        {{-- Dashboard Link --}}
-        <a href="{{ route('dashboard') }}"
-           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('dashboard') ? 'bg-gray-200' : '' }}">
+
+        <a href="{{ route('admin.dashboard') }}"
+           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-200' : '' }}">
             Dashboard
         </a>
 
-        {{-- Students Link --}}
-        <a href="{{ route('students.index') }}"
-           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('students.*') ? 'bg-gray-200' : '' }}">
+
+        <a href="{{ route('admin.students.index') }}"
+           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('admin.students.*') ? 'bg-gray-200' : '' }}">
             Students
         </a>
+
 
         <a href="{{ route('admin.courses.index') }}"
            class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('admin.courses.*') ? 'bg-gray-200' : '' }}">
             Courses
         </a>
-        <a href="{{ route('users.index') }}"
-           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('users.*') ? 'bg-gray-200' : '' }}">
+
+
+        <a href="{{ route('admin.categories.index') }}"
+           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('admin.categories.*') ? 'bg-gray-200' : '' }}">
+            Categories
+        </a>
+
+
+        <a href="{{ route('admin.users.index') }}"
+           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('admin.users.*') ? 'bg-gray-200' : '' }}">
             Users
         </a>
 
-        {{-- CORRECTED Logout Button --}}
+        {{-- Logout Button --}}
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="w-full text-left block px-4 py-2 rounded hover:bg-gray-200 text-red-600">

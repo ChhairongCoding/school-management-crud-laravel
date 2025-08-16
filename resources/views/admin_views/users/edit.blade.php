@@ -2,7 +2,7 @@
 
 @section('content')
     <h1 class="text-3xl font-bold mb-6">Edit User: {{ $user->name }}</h1>
-    <form action="{{ route('users.update', $user->id) }}" method="POST" class="bg-white p-6 rounded shadow-md">
+    <form action="{{ route('admin.users.update', $user->id) }}" method="POST" class="bg-white p-6 rounded shadow-md">
         @csrf
         @method('PUT')
 

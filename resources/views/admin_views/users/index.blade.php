@@ -24,8 +24,8 @@
                     </td>
 
                     <td class="flex items-center space-x-4 py-4">
-                        <a href="{{ route('users.edit', $user->id) }}" class="text-indigo-600 hover:underline">Edit</a>
-                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                        <a href="{{ route('admin.users.edit', $user->id) }}" class="text-indigo-600 hover:underline">Edit</a>
+                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:underline">Delete</button>

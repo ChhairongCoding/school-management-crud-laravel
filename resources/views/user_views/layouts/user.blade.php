@@ -15,7 +15,7 @@
 <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
         <a href="/" class="text-xl font-bold text-indigo-600">E-Learning</a>
-        <nav class="space-x-8 hidden md:block">
+        <nav class="space-x-6 hidden md:block">
             <a href="{{ route('home') }}"
                class="{{ request()->routeIs('home') ? 'text-indigo-600 font-bold' : 'hover:text-indigo-600' }}">
                 Home

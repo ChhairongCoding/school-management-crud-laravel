@@ -7,7 +7,6 @@
             <div>
                 <button
                     type="button"
-                    {{-- Changed --}}
                     onclick="window.location.href='{{ route('admin.courses.create') }}'"
                     class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                     Add Course
@@ -34,7 +33,7 @@
                             <hr>
                             <div class="flex justify-between p-2">
                                 <h3>
-                                    {{ rand(1000, 10000) }} <span>students</span>
+                                    {{ $course->enrollments->count() }} <span>students</span>
                                 </h3>
                                 <h3 class="text-purple-500">
                                     ${{ number_format($course->price, 2) }}

@@ -2,7 +2,7 @@
 
 @section('content')
     <h2 class="text-2xl font-semibold mb-4">Update Student</h2>
-    <form action="{{ route('students.update', $student->id) }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 shadow rounded space-y-4">
+    <form action="{{ route('admin.students.update', $student->id) }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 shadow rounded space-y-4">
 
     @csrf @method('PUT')
         <div>

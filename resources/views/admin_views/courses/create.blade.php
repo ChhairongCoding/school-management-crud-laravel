@@ -27,6 +27,15 @@
                 @enderror
             </div>
             <div class="mb-4">
+                <label for="category_id" class="block text-gray-700 font-semibold mb-2">Category</label>
+                <select name="category_id" id="category_id" class="w-full px-3 py-2 border rounded-lg" required>
+                    <option value="">-- Select a Category --</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-4">
                 <label for="price" class="block text-gray-700">Price</label>
                 <input type="number" step="0.01" name="price" id="price" class="w-full border rounded p-2" value="{{ old('price') }}">
                 @error('price')

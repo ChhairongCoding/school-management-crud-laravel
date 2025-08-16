@@ -13,21 +13,26 @@ class AuthController extends Controller
         return view('auth_views.login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            if(auth()->user()-> role === 'admin') {
-                return redirect() -> intended('/dashboard');
+
+            if (auth()->user()->role === 'admin') {
+                return redirect()->intended(route('admin.dashboard'));
             }
-            return redirect()->intended('/');
+
+            return redirect()->intended(route('home'));
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials']);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     public function showRegister() {

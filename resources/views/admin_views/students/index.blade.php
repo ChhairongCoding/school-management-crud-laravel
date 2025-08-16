@@ -17,7 +17,7 @@
 
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold">Students</h1>
-        <a href="{{ route('students.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Student</a>
+        <a href="{{ route('admin.students.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Student</a>
     </div>
 
     <div class="overflow-x-auto bg-white rounded shadow">
@@ -49,7 +49,7 @@
                     </td>
                     <td class="px-6 py-4 text-center space-x-2">
                         <button
-                            onclick="window.location.href='{{ route('students.edit',$student->id) }}'"
+                            onclick="window.location.href='{{ route('admin.students.edit',$student->id) }}'"
                             class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">Edit</button>
                         <button
                             onclick="confirmDelete({{ $student->id }})"

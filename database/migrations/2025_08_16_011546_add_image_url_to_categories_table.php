@@ -11,21 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            // ADD the foreign key here
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->string('image_url')->nullable()->after('slug');
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->dropForeign(['category_id']);
-            $table->dropColumn('category_id');
+        Schema::table('categories', function (Blueprint $table) {
+            //
         });
     }
 };
