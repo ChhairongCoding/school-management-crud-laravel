@@ -2,7 +2,7 @@
 @section('content')
     <h1 class="text-3xl font-bold mb-6">Add New Category</h1>
 
-    {{-- 1. Add enctype to the form tag --}}
+
     <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
         @csrf
         <div class="mb-4">
@@ -11,7 +11,6 @@
             @error('name')<span class="text-red-500">{{ $message }}</span>@enderror
         </div>
 
-        {{-- 2. Change the input from text to file --}}
         <div class="mb-4">
             <label for="image" class="block text-gray-700">Category Image</label>
             <input type="file" name="image" id="image" class="w-full border rounded p-2">
