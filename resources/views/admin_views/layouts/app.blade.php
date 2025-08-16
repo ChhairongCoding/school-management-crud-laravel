@@ -13,10 +13,34 @@
         Students System
     </div>
     <nav class="p-4 space-y-2">
-        <a href="/" class="block px-4 py-2 rounded hover:bg-gray-200">Dashboard</a>
-        <a href="/students" class="block px-4 py-2 rounded hover:bg-gray-200">Students</a>
-        <a href="/courses" class="block px-4 py-2 rounded hover:bg-gray-200">Courses</a>
-        <a href="#" class="block px-4 py-2 rounded hover:bg-gray-200 text-red-600">Logout</a>
+        {{-- Dashboard Link --}}
+        <a href="{{ route('dashboard') }}"
+           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('dashboard') ? 'bg-gray-200' : '' }}">
+            Dashboard
+        </a>
+
+        {{-- Students Link --}}
+        <a href="{{ route('students.index') }}"
+           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('students.*') ? 'bg-gray-200' : '' }}">
+            Students
+        </a>
+
+        <a href="{{ route('admin.courses.index') }}"
+           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('admin.courses.*') ? 'bg-gray-200' : '' }}">
+            Courses
+        </a>
+        <a href="{{ route('users.index') }}"
+           class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('users.*') ? 'bg-gray-200' : '' }}">
+            Users
+        </a>
+
+        {{-- CORRECTED Logout Button --}}
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="w-full text-left block px-4 py-2 rounded hover:bg-gray-200 text-red-600">
+                Logout
+            </button>
+        </form>
     </nav>
 </aside>
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
+    // ... index() and create() methods are fine ...
     public function index()
     {
         $courses = Course::all();
@@ -19,24 +20,23 @@ class CourseController extends Controller
         return view('admin_views.courses.create');
     }
 
+
     public function store(Request $request)
     {
-        // Validate the request
+        // ... validation and image upload logic is fine ...
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'duration' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle the image upload
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('courses', 'public');
         }
 
-        // Create the course
         Course::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -45,51 +45,53 @@ class CourseController extends Controller
             'image_url' => $imagePath,
         ]);
 
-        return redirect()->route('courses.index')->with('success', 'Course created successfully!');
+        // Change this line
+        return redirect()->route('admin.courses.index')->with('success', 'Course created successfully!');
     }
 
+    // ... edit() method is fine ...
     public function edit(Course $course)
     {
         return view('admin_views.courses.edit', compact('course'));
     }
 
+
     public function update(Request $request, Course $course)
     {
-        // Validate the request
+        // ... validation and update logic is fine ...
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'duration' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle the image upload
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
             if ($course->image_url) {
                 Storage::disk('public')->delete($course->image_url);
             }
             $imagePath = $request->file('image')->store('courses', 'public');
             $validated['image_url'] = $imagePath;
         } else {
-            $validated['image_url'] = $course->image_url; // Keep existing image
+            $validated['image_url'] = $course->image_url;
         }
 
-        // Update the course
         $course->update($validated);
 
-        return redirect()->route('courses.index')->with('success', 'Course updated successfully!');
+        // Change this line
+        return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully!');
     }
 
     public function destroy(Course $course)
     {
-        // Delete the image if it exists
+        // ... delete logic is fine ...
         if ($course->image_url) {
             Storage::disk('public')->delete($course->image_url);
         }
-
         $course->delete();
-        return redirect()->route('courses.index')->with('success', 'Course deleted successfully!');
+
+        // Change this line
+        return redirect()->route('admin.courses.index')->with('success', 'Course deleted successfully!');
     }
 }

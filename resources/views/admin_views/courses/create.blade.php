@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h1 class="text-3xl font-bold mb-6">Add New Course</h1>
-        <form action="{{ route('courses.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.courses.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-4">
                 <label for="title" class="block text-gray-700">Title</label>

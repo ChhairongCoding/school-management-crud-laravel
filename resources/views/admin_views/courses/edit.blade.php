@@ -10,7 +10,7 @@
             </div>
         @endif
 
-        <form action="{{ route('courses.update', $course->id) }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('admin.courses.update', $course->id) }}" method="POST" enctype="multipart/form-data"
               class="space-y-4">
             @csrf
             @method('PUT')
