@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
+
 class CourseController extends Controller
 {
     // ... index() and create() methods are fine ...
@@ -58,9 +59,15 @@ class CourseController extends Controller
     }
 
     // ... edit() method is fine ...
+    // In app/Http/Controllers/CourseController.php
+
     public function edit(Course $course)
     {
-        return view('admin_views.courses.edit', compact('course'));
+        // It must fetch the categories
+        $categories = Category::all();
+
+        // It must pass BOTH variables to the view
+        return view('admin_views.courses.edit', compact('course', 'categories'));
     }
 
 
@@ -84,7 +91,6 @@ class CourseController extends Controller
             $validated['image_url'] = $imagePath;
         }
 
-        // --- CHANGE 3: The update() method now includes category_id ---
         $course->update($validated);
 
         return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully!');
@@ -101,6 +107,6 @@ class CourseController extends Controller
         return redirect()->route('admin.courses.index')->with('success', 'Course deleted successfully!');
     }
     public function show(Course $course){
-        return view('admin_views.courses.edit', compact('course'));
+        return redirect()->route('admin.courses.edit', $course);
     }
 }

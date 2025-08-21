@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\Category; // 1. Import the Category model
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Lesson;
+
 
 class PageController extends Controller
 {
@@ -43,5 +45,10 @@ class PageController extends Controller
     {
         $course = Course::findOrFail($id);
         return view('user_views.courses.show', compact('course'));
+    }
+    public function showLesson(Lesson $lesson)
+    {
+        // We can add logic here later to check if the user is enrolled
+        return view('user_views.lessons.show', compact('lesson'));
     }
 }

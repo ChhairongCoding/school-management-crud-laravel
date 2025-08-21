@@ -2,14 +2,12 @@
 @section('content')
     <h1 class="text-3xl font-bold mb-6">Edit Category: {{ $category->name }}</h1>
 
-    {{-- 1. Update the form action to point to the 'update' route --}}
     <form action="{{ route('admin.categories.update', $category->id) }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
         @csrf
         @method('PUT') {{-- 2. Add the PUT method for updating --}}
 
         <div class="mb-4">
             <label for="name" class="block text-gray-700">Category Name</label>
-            {{-- 3. Show the existing category name --}}
             <input type="text" name="name" id="name" class="w-full border rounded p-2" value="{{ $category->name }}">
             @error('name')<span class="text-red-500">{{ $message }}</span>@enderror
         </div>

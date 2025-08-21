@@ -17,11 +17,20 @@ class Course extends Model
         'image_url',
         'category_id'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);
     }
 
-
-
+    // Add this method
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class)->orderBy('order');
+    }
 }
