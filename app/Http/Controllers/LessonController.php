@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Course;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class LessonController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'video' => 'required|file|mimes:mp4,mov,avi,wmv|max:102400', // Max 100MB
+            'video' => 'required|file|mimes:mp4,mov,avi,wmv|max:102400',
             'description' => 'nullable|string',
         ]);
 
@@ -27,6 +28,7 @@ class LessonController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'video_url' => $videoPath,
+            'video_type' => 'local', // <-- Add this line
         ]);
 
         return redirect()->route('admin.courses.edit', $course)->with('success', 'Lesson added successfully!');
@@ -35,33 +37,32 @@ class LessonController extends Controller
     public function edit(Course $course, Lesson $lesson)
     {
         return view('admin_views.lessons.edit', compact('course', 'lesson'));
-
     }
 
     public function update(Request $request, Course $course, Lesson $lesson)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'video' => 'nullable|file|mimes:mp4,mov,avi,wmv|max:102400',
             'description' => 'nullable|string',
-            'video' => 'nullable|file|mimes:mp4,mov,avi,wmv|max:102400', // Video is optional
         ]);
 
-        $videoPath = $lesson->video_url; // Keep the old path by default
+        $videoPath = $lesson->video_url;
+        $videoType = $lesson->video_type;
 
-        // Check if a new video file has been uploaded
         if ($request->hasFile('video')) {
-            // Delete the old video file from storage
             if ($lesson->video_url) {
                 Storage::disk('public')->delete($lesson->video_url);
             }
-            // Store the new video file
             $videoPath = $request->file('video')->store('lessons', 'public');
+            $videoType = 'local'; // <-- Add this line
         }
 
         $lesson->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'video_url' => $videoPath, // Save the new or existing path
+            'video_url' => $videoPath,
+            'video_type' => $videoType, // <-- And this line
         ]);
 
         return redirect()->route('admin.courses.edit', $course)->with('success', 'Lesson updated successfully!');
@@ -69,7 +70,6 @@ class LessonController extends Controller
 
     public function destroy(Course $course, Lesson $lesson)
     {
-        // Delete the video file from storage
         if ($lesson->video_url) {
             Storage::disk('public')->delete($lesson->video_url);
         }

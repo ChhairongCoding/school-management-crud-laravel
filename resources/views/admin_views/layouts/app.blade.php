@@ -30,6 +30,10 @@
            class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('admin.courses.*') ? 'bg-gray-200' : '' }}">
             Courses
         </a>
+        <a href="{{ route('admin.enrollments.index') }}"
+            class="block px-4 py-2 rounded hover:bg-gray-200 {{ request()->routeIs('admin.enrollments.index') ? 'bg-gray-200' : '' }}">
+            Enrollments
+        </a>
 
 
         <a href="{{ route('admin.categories.index') }}"

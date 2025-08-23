@@ -45,10 +45,7 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        $categories = Category::all();
-
-        // 2. Pass BOTH the course AND the categories to the view
-        return view('admin_views.courses.edit', compact('course', 'categories'));
+        return view('admin_views.categories.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)

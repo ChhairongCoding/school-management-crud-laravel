@@ -17,7 +17,9 @@ class CourseSeeder extends Seeder
             'description' => 'A beginner-friendly course on Laravel.',
             'duration' => 10,
             'price' => 25.00,
-            'image_url' => 'courses/default.png'
+            'image_url' => 'courses/default.png',
+            'category_id' => 1,
+
         ]);
     }
 }

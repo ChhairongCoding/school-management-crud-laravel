@@ -13,12 +13,13 @@ class EnrollmentController extends Controller
     {
         $user = Auth::user();
 
+        // Check if the user is already enrolled
         $isEnrolled = Enrollment::where('user_id', $user->id)
             ->where('course_id', $course->id)
             ->exists();
 
         if ($isEnrolled) {
-            return back()->with('error', 'You are already enrolled in this course.');
+            return redirect()->route('my.courses')->with('error', 'You are already enrolled in this course.');
         }
 
         // Create the enrollment record
@@ -28,6 +29,6 @@ class EnrollmentController extends Controller
             'price_paid' => $course->price,
         ]);
 
-        return redirect()->route('home')->with('success', 'You have successfully enrolled in the course!');
+        return redirect()->route('my.courses')->with('success', 'You have successfully enrolled in the course!');
     }
 }
