@@ -1,46 +1,50 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StudentController;
-use App\http\Controllers\CourseController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuthController;
-
-
-//Route::get('/students', 'StudentController@index');
-
-//Route::get('/', function () {
-//    return view('index');
-//});
-
-
-Route::get('/', fn () => view('admin_views.dashboard'));
-Route::get('/dashboard', fn () => view('admin_views.dashboard'))->name('dashboard');
-
-
-
-Route::resource('students', StudentController::class);
-Route::get('/students/{id}/delete', [StudentController::class, 'delete'])->name('students.delete');
-Route::resource('/courses', CourseController::class);
-Route::get('/courses/{id}/view', [CourseController::class, 'view'])->name('courses.view');
-
-
-//auth
-
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-
-
-
-
-//user
-
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserController;
 
-Route::get('/user/home', [PageController::class, 'home'])->name('home');
-Route::get('/user/courses', [PageController::class, 'courses']);
-Route::get('/user/about', [PageController::class, 'about']);
-Route::get('/user/contact', [PageController::class, 'contact']);
-Route::get('/user/courses/{id}', [PageController::class, 'show'])->name('courses.show');
+// --- PUBLIC ROUTES ---
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/courses', [PageController::class, 'courses'])->name('courses.index');
+Route::get('/courses/{course}', [PageController::class, 'show'])->name('courses.show');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+
+// --- GUEST-ONLY AUTH ROUTES ---
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+// --- AUTHENTICATED USER ROUTES ---
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'store'])->name('courses.enroll');
+    Route::get('/my-courses', [PageController::class, 'myCourses'])->name('my.courses');
+    Route::get('/lessons/{lesson}', [PageController::class, 'showLesson'])->name('lessons.show');
+});
+
+// --- ADMIN-ONLY ROUTES ---
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('courses', CourseController::class)->names('admin.courses');
+    Route::resource('categories', CategoryController::class)->names('admin.categories');
+    Route::resource('users', UserController::class)->names('admin.users');
+    Route::resource('students', StudentController::class)->names('admin.students');
+    Route::resource('courses.lessons', LessonController::class)->except(['index', 'show'])->names('admin.lessons');
+
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+    Route::get('/enrollments', [AdminDashboardController::class, 'enrollments'])->name('admin.enrollments.index');
+
+});

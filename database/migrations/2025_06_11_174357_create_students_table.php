@@ -1,25 +1,24 @@
 <?php
 
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->increments("id");
+            $table->id();
             $table->string("name");
-            $table->string("email");
-            $table->string("course");
-            $table->string('phone')->default('N/A');
-            $table->string("address");
-            $table->string("status");
-            $table->text("image_url")->nullable();
+            $table->string("email")->unique();
+            $table->string('phone')->nullable();
+            $table->string("address")->nullable();
+            $table->string("status")->default('active');
+            $table->string("image_url")->nullable();
             $table->timestamps();
         });
     }

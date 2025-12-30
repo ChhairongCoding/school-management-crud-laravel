@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+
 
 class CourseController extends Controller
 {
+    // ... index() and create() methods are fine ...
     public function index()
     {
         $courses = Course::all();
@@ -16,80 +19,94 @@ class CourseController extends Controller
 
     public function create()
     {
-        return view('admin_views.courses.create');
+        // This will now work correctly
+        $categories = Category::all();
+
+        // Return the correct admin view and pass the categories to it
+        return view('admin_views.courses.create', compact('categories'));
     }
+
+
 
     public function store(Request $request)
     {
-        // Validate the request
+        // 1. Add 'category_id' to the validation
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'duration' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'category_id' => 'required|exists:categories,id', // Make sure it's a valid category
+            'image' => 'nullable|image',
         ]);
 
-        // Handle the image upload
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('courses', 'public');
         }
 
-        // Create the course
+        // 2. Add 'category_id' when creating the course
         Course::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'duration' => $validated['duration'],
             'price' => $validated['price'],
+            'category_id' => $validated['category_id'],
             'image_url' => $imagePath,
         ]);
 
-        return redirect()->route('courses.index')->with('success', 'Course created successfully!');
+        return redirect()->route('admin.courses.index')->with('success', 'Course created successfully!');
     }
+
+    // ... edit() method is fine ...
+    // In app/Http/Controllers/CourseController.php
 
     public function edit(Course $course)
     {
-        return view('admin_views.courses.edit', compact('course'));
+        // It must fetch the categories
+        $categories = Category::all();
+
+        // It must pass BOTH variables to the view
+        return view('admin_views.courses.edit', compact('course', 'categories'));
     }
+
 
     public function update(Request $request, Course $course)
     {
-        // Validate the request
+        // --- CHANGE 2: Add category_id to validation ---
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'duration' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image',
         ]);
 
-        // Handle the image upload
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
             if ($course->image_url) {
                 Storage::disk('public')->delete($course->image_url);
             }
             $imagePath = $request->file('image')->store('courses', 'public');
             $validated['image_url'] = $imagePath;
-        } else {
-            $validated['image_url'] = $course->image_url; // Keep existing image
         }
 
-        // Update the course
         $course->update($validated);
 
-        return redirect()->route('courses.index')->with('success', 'Course updated successfully!');
+        return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully!');
     }
+
 
     public function destroy(Course $course)
     {
-        // Delete the image if it exists
         if ($course->image_url) {
             Storage::disk('public')->delete($course->image_url);
         }
-
         $course->delete();
-        return redirect()->route('courses.index')->with('success', 'Course deleted successfully!');
+
+        return redirect()->route('admin.courses.index')->with('success', 'Course deleted successfully!');
+    }
+    public function show(Course $course){
+        return redirect()->route('admin.courses.edit', $course);
     }
 }

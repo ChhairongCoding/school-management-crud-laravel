@@ -13,18 +13,26 @@ class AuthController extends Controller
         return view('auth_views.login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+
+            if (auth()->user()->role === 'admin') {
+                return redirect()->intended(route('admin.dashboard'));
+            }
+
+            return redirect()->intended(route('home'));
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials']);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     public function showRegister() {
@@ -46,6 +54,12 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        return redirect('/');
+    }
+    public function logout(Request $request) {
+        auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/');
     }
 }

@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
+            // REMOVE this line: $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
             $table->integer('duration');

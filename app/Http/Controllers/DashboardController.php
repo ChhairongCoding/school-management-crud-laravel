@@ -2,64 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dashboard;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class AdminDashboardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-    }
+        $totalUsers = User::count();
+        $totalRevenue = Enrollment::sum('price_paid');
+        $totalCoursesValue = Course::sum('price');
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Dashboard $dashboard)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Dashboard $dashboard)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Dashboard $dashboard)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Dashboard $dashboard)
-    {
-        //
+        return view('admin_views.dashboard', [
+            'totalUsers' => $totalUsers,
+            'totalRevenue' => $totalRevenue,
+            'totalCoursesValue' => $totalCoursesValue,
+        ]);
     }
 }

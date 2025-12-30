@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h1 class="text-3xl font-bold mb-6">Add New Course</h1>
-        <form action="{{ route('courses.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.courses.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-4">
                 <label for="title" class="block text-gray-700">Title</label>
@@ -25,6 +25,15 @@
                 @error('duration')
                 <span class="text-red-500">{{ $message }}</span>
                 @enderror
+            </div>
+            <div class="mb-4">
+                <label for="category_id" class="block text-gray-700 font-semibold mb-2">Category</label>
+                <select name="category_id" id="category_id" class="w-full px-3 py-2 border rounded-lg" required>
+                    <option value="">-- Select a Category --</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="mb-4">
                 <label for="price" class="block text-gray-700">Price</label>
